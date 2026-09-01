@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Encyclopedia of the Elements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#EDE8DE;
+    --ink-dim:#A9A79D;
+    --bg:#12181F;
+    --bg-raised:#1A222C;
+    --line:#2B3541;
+
+    --alkali:#E0785C;
+    --alkaline:#D9B36C;
+    --metalloid:#7FB097;
+    --nonmetal:#5B9BD5;
+    --halogen:#5FB8B0;
+    --noble:#A67FC9;
+
+    --serif-none: 0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- Header ---------- */
+
+  header.hero{
+    padding:88px 0 64px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+
+  h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.05;
+    font-weight:600;
+    margin:0;
+    max-width:14ch;
+    letter-spacing:-0.01em;
+  }
+
+  .count-badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.9rem;
+    color:var(--ink-dim);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 14px;
+    white-space:nowrap;
+    line-height:1.5;
+  }
+
+  .count-badge strong{
+    color:var(--ink);
+    font-size:1.1rem;
+    display:block;
+  }
+
+  .hero p.lede{
+    margin:28px 0 0;
+    max-width:56ch;
+    font-size:1.15rem;
+    line-height:1.6;
+    color:var(--ink-dim);
+  }
+
+  /* ---------- Periodic grid ---------- */
+
+  section.table-section{
+    padding:64px 0 24px;
+  }
+
+  section.table-section h2{
+    font-size:0.95rem;
+    font-weight:500;
+    color:var(--ink-dim);
+    margin:0 0 24px;
+  }
+
+  .ptable{
+    display:grid;
+    grid-template-columns: repeat(18, minmax(0,1fr));
+    gap:6px;
+  }
+
+  .cell{
+    position:relative;
+    aspect-ratio:1/1;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--bg-raised);
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    text-decoration:none;
+    transition:transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    --accent: var(--nonmetal);
+  }
+
+  .cell::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:4px;
+    border-top:2px solid var(--accent);
+    pointer-events:none;
+  }
+
+  .cell:hover, .cell:focus-visible{
+    transform:translateY(-3px);
+    border-color:var(--accent);
+    background:#1F2A36;
+    outline:none;
+  }
+
+  .cell:focus-visible{
+    box-shadow:0 0 0 2px var(--accent);
+  }
+
+  .cell .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    color:var(--ink-dim);
+  }
+
+  .cell .sym{
+    font-size:clamp(1.1rem, 2.4vw, 1.6rem);
+    font-weight:600;
+    line-height:1;
+  }
+
+  .cell .name{
+    font-size:0.62rem;
+    color:var(--ink-dim);
+    letter-spacing:0.01em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .cell.alkali{ --accent:var(--alkali); }
+  .cell.alkaline{ --accent:var(--alkaline); }
+  .cell.metalloid{ --accent:var(--metalloid); }
+  .cell.nonmetal{ --accent:var(--nonmetal); }
+  .cell.halogen{ --accent:var(--halogen); }
+  .cell.noble{ --accent:var(--noble); }
+
+  /* ---------- Legend ---------- */
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    padding:32px 0 72px;
+    font-size:0.85rem;
+    color:var(--ink-dim);
+  }
+
+  .legend span{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .swatch{
+    width:10px;
+    height:10px;
+    border-radius:2px;
+    display:inline-block;
+  }
+
+  .swatch.alkali{ background:var(--alkali); }
+  .swatch.alkaline{ background:var(--alkaline); }
+  .swatch.metalloid{ background:var(--metalloid); }
+  .swatch.nonmetal{ background:var(--nonmetal); }
+  .swatch.halogen{ background:var(--halogen); }
+  .swatch.noble{ background:var(--noble); }
+
+  /* ---------- Footer ---------- */
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0 64px;
+    font-size:0.85rem;
+    color:var(--ink-dim);
+  }
+
+  footer p{ margin:0; line-height:1.6; max-width:60ch; }
+
+  /* ---------- Mobile ---------- */
+
+  @media (max-width: 720px){
+    .ptable{
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    .cell{
+      grid-column:auto !important;
+      grid-row:auto !important;
+      aspect-ratio:auto;
+      padding:14px;
+      min-height:88px;
+    }
+    header.hero{ padding:56px 0 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .cell{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <h1>An Encyclopedia of the Elements</h1>
+      <div class="count-badge">
+        <strong>9 / 118</strong>
+        entries published
+      </div>
+    </div>
+    <p class="lede">
+      A complete, authoritative reference entry for every known chemical element —
+      atomic structure, physical and chemical properties, discovery history, and
+      practical uses. Positioned exactly as they sit on the periodic table, so you
+      can navigate the way chemists actually think about them.
+    </p>
+  </header>
+
+  <section class="table-section">
+    <h2>Published entries</h2>
+
+    <div class="ptable">
+      <a class="cell nonmetal" href="001-H-Hydrogen.html" style="grid-column:1; grid-row:1;">
+        <span class="num">1</span>
+        <span class="sym">H</span>
+        <span class="name">Hydrogen</span>
+      </a>
+
+      <a class="cell noble" href="002-He-Helium.html" style="grid-column:18; grid-row:1;">
+        <span class="num">2</span>
+        <span class="sym">He</span>
+        <span class="name">Helium</span>
+      </a>
+
+      <a class="cell alkali" href="003-Li-Lithium.html" style="grid-column:1; grid-row:2;">
+        <span class="num">3</span>
+        <span class="sym">Li</span>
+        <span class="name">Lithium</span>
+      </a>
+
+      <a class="cell alkaline" href="004-Be-Beryllium.html" style="grid-column:2; grid-row:2;">
+        <span class="num">4</span>
+        <span class="sym">Be</span>
+        <span class="name">Beryllium</span>
+      </a>
+
+      <a class="cell metalloid" href="005-B-Boron.html" style="grid-column:13; grid-row:2;">
+        <span class="num">5</span>
+        <span class="sym">B</span>
+        <span class="name">Boron</span>
+      </a>
+
+      <a class="cell nonmetal" href="006-C-Carbon.html" style="grid-column:14; grid-row:2;">
+        <span class="num">6</span>
+        <span class="sym">C</span>
+        <span class="name">Carbon</span>
+      </a>
+
+      <a class="cell nonmetal" href="007-N-Nitrogen.html" style="grid-column:15; grid-row:2;">
+        <span class="num">7</span>
+        <span class="sym">N</span>
+        <span class="name">Nitrogen</span>
+      </a>
+
+      <a class="cell nonmetal" href="008-O-Oxygen.html" style="grid-column:16; grid-row:2;">
+        <span class="num">8</span>
+        <span class="sym">O</span>
+        <span class="name">Oxygen</span>
+      </a>
+
+      <a class="cell halogen" href="009-F-Fluorine.html" style="grid-column:17; grid-row:2;">
+        <span class="num">9</span>
+        <span class="sym">F</span>
+        <span class="name">Fluorine</span>
+      </a>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch alkali"></i> Alkali metal</span>
+      <span><i class="swatch alkaline"></i> Alkaline earth metal</span>
+      <span><i class="swatch metalloid"></i> Metalloid</span>
+      <span><i class="swatch nonmetal"></i> Nonmetal</span>
+      <span><i class="swatch halogen"></i> Halogen</span>
+      <span><i class="swatch noble"></i> Noble gas</span>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Entries 10 through 118 are in progress. Each new element takes its exact
+      seat on the table above the moment it's published.
+    </p>
+  </footer>
+</div>
+
+</body>
+</html>
